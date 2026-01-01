@@ -1,0 +1,22 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor temp files
+*~
+*.swp
+*.swo
+
+# AppDaemon logs
+appdaemon/logs/
+appdaemon/*.log
+
+# Virtual environments
+venv/
+.env/
