@@ -5,11 +5,8 @@ from .shunt import Shunt
 class IndoorTempCtrl(hass.Hass):
 
     def initialize(self):
-        self.run_every(self.loop, "now", 1)
-        self.log("indoor_temp_ctrl startad")
-
         # Sensorer
-        self.framledning_sensor = "sensor.framledningstemperatur"
+        self.framledning_sensor = "sensor.d1mini_framledningstemperatur"
         self.weather_entity = "weather.forecast_home"
 
         # Värmekurva
@@ -34,12 +31,14 @@ class IndoorTempCtrl(hass.Hass):
             decrease_entity="switch.agara_t2_down",
             max_steps=75
         )
+        self.run_every(self.loop, "now", 30)
+        self.log("indoor_temp_ctrl startad")
 
     def loop(self, kwargs):
         # 1. Framledning
         fram_temp = self.get_state(self.framledning_sensor)
         if fram_temp is None:
-            self.log("Ingen framledningstemperatur ännu")
+            self.log("Missing framledningstemperatur")
             return
         fram_temp = float(fram_temp)
 

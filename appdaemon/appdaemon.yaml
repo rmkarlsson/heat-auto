@@ -4,16 +4,8 @@ appdaemon:
   elevation: 0
   time_zone: Europe/Stockholm
 
-http:
-  url: http://127.0.0.1:5050
-
-admin:
-api:
-
-hadashboard:
-
-plugins:
-  HASS:
-    type: hass
-    ha_url: http://homeassistant.local:8123
-    token: YOUR_LONG_LIVED_ACCESS_TOKEN
+  plugins:
+    HASS:
+      type: hass
+      ha_url: http://192.168.1.120:8123
+      token: "YOUR_LONG_LIVED_ACCESS_TOKEN"

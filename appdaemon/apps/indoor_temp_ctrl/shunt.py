@@ -26,8 +26,8 @@ class Shunt:
             return False
 
         self.hass.log("Shunt: Ökar (aktiverar relä i 1 sekund)")
-        self.hass.call_service("switch/turn_on", entity_id=self.increase_entity)
-        self.hass.run_in(lambda _: self.hass.call_service("switch/turn_off", entity_id=self.increase_entity), 1)
+        #self.hass.call_service("switch/turn_on", entity_id=self.increase_entity)
+        #self.hass.run_in(lambda _: self.hass.call_service("switch/turn_off", entity_id=self.increase_entity), 1)
 
         self._register_move("up")
         return True
@@ -38,8 +38,8 @@ class Shunt:
             return False
 
         self.hass.log("Shunt: Minskar (aktiverar relä i 1 sekund)")
-        self.hass.call_service("switch/turn_on", entity_id=self.decrease_entity)
-        self.hass.run_in(lambda _: self.hass.call_service("switch/turn_off", entity_id=self.decrease_entity), 1)
+        #self.hass.call_service("switch/turn_on", entity_id=self.decrease_entity)
+        #self.hass.run_in(lambda _: self.hass.call_service("switch/turn_off", entity_id=self.decrease_entity), 1)
 
         self._register_move("down")
         return True
