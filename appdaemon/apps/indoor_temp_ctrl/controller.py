@@ -4,22 +4,29 @@ from .shunt import Shunt
 
 class IndoorTempCtrl(hass.Hass):
 
+    def terminate(self):
+        self.log("Gracefull shutdown in apps")
+        self.log("Power off shunt")
+        self.shunt.hass.call_service("switch/turn_off", entity_id=self.shunt.increase_entity)
+        self.shunt.hass.call_service("switch/turn_off", entity_id=self.shunt.decrease_entity)
+
+
     def initialize(self):
         self.framledning_sensor = "sensor.d1mini_framledningstemperatur"
         self.weather_entity = "weather.forecast_home"
 
         # Värmekurva
         heating_table = {
-            -30: 55,
-            -25: 52,
-            -20: 50,
-            -15: 47,
-            -10: 45,
-            -5: 42,
-            0: 38,
-            5: 34,
-            10: 30,
-            15: 25,
+            -30: 40,
+            -25: 38,
+            -20: 34,
+            -15: 34,
+            -10: 32,
+            -5: 30,
+            0: 28,
+            5: 25,
+            10: 23,
+            15: 21,
         }
         self.curve = HeatingCurve(heating_table)
 
@@ -30,7 +37,7 @@ class IndoorTempCtrl(hass.Hass):
             decrease_entity="switch.0x54ef44100120aedb_l2",
             max_steps=75
         )
-        self.run_every(self.loop, "now", 30)
+        self.run_every(self.loop, "now", 60)
         self.log("indoor_temp_ctrl startad")
 
     def loop(self, kwargs):
@@ -54,11 +61,11 @@ class IndoorTempCtrl(hass.Hass):
         # 4. Diff
         diff = target_temp - fram_temp
 
-        self.log(f"Outdoor: {outdoor_temp}°C, actutal heat in: {fram_temp}°C, target heat in: {target_temp}°C, Diff: {diff:.2f}°C")
+        self.log(f"Outdoor: {outdoor_temp} C, actutal heat in: {fram_temp} C, target heat in: {target_temp} C, Diff: {diff:.2f} C")
 
         # 5. Deadband ±2°C
         if abs(diff) <= 2:
-            self.log("Within deadband (±2°C), no shunt adjustement")
+            self.log("Within deadband (+/-2 C), no shunt adjustement")
             return
 
         # 6. Styr shunten
