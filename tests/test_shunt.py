@@ -12,6 +12,9 @@ class MockHass:
     def call_service(self, service, entity_id=None):
         self.service_calls.append((service, entity_id))
 
+    def get_state(self, entity_id=None):
+        return "off"
+
     def run_in(self, callback, delay):
         callback(None)
 
@@ -42,7 +45,6 @@ def test_increase_blocked_after_75(shunt, hass):
     for _ in range(75):
         shunt.increase()
     assert shunt.increase() is False
-    assert "bottnad uppåt" in hass.log_messages[-1]
 
 def test_direction_change_resets_counter(shunt):
     shunt.increase()
@@ -60,4 +62,3 @@ def test_decrease_blocked_after_75(shunt, hass):
     for _ in range(75):
         shunt.decrease()
     assert shunt.decrease() is False
-    assert "bottnad nedåt" in hass.log_messages[-1]

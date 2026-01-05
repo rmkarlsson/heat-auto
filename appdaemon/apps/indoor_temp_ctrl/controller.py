@@ -5,7 +5,6 @@ from .shunt import Shunt
 class IndoorTempCtrl(hass.Hass):
 
     def initialize(self):
-        # Sensorer
         self.framledning_sensor = "sensor.d1mini_framledningstemperatur"
         self.weather_entity = "weather.forecast_home"
 
@@ -27,8 +26,8 @@ class IndoorTempCtrl(hass.Hass):
         # Shunt
         self.shunt = Shunt(
             hass=self,
-            increase_entity="switch.agara_t2_up",
-            decrease_entity="switch.agara_t2_down",
+            increase_entity="switch.0x54ef44100120aedb_l1",
+            decrease_entity="switch.0x54ef44100120aedb_l2",
             max_steps=75
         )
         self.run_every(self.loop, "now", 30)
@@ -45,7 +44,7 @@ class IndoorTempCtrl(hass.Hass):
         # 2. Utetemp
         outdoor_temp = self.get_state(self.weather_entity, attribute="temperature")
         if outdoor_temp is None:
-            self.log("Ingen utomhustemperatur ännu")
+            self.log("Missing outdoor temperatur")
             return
         outdoor_temp = float(outdoor_temp)
 
@@ -55,11 +54,11 @@ class IndoorTempCtrl(hass.Hass):
         # 4. Diff
         diff = target_temp - fram_temp
 
-        self.log(f"Ute: {outdoor_temp}°C, Fram: {fram_temp}°C, Mål: {target_temp}°C, Diff: {diff:.2f}°C")
+        self.log(f"Outdoor: {outdoor_temp}°C, actutal heat in: {fram_temp}°C, target heat in: {target_temp}°C, Diff: {diff:.2f}°C")
 
         # 5. Deadband ±2°C
         if abs(diff) <= 2:
-            self.log("Inom deadband (±2°C), ingen shuntjustering")
+            self.log("Within deadband (±2°C), no shunt adjustement")
             return
 
         # 6. Styr shunten
