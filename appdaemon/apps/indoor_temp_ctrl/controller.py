@@ -33,8 +33,8 @@ class IndoorTempCtrl(hass.Hass):
         # Shunt
         self.shunt = Shunt(
             hass=self,
-            increase_entity="switch.0x54ef44100120aedb_l1",
-            decrease_entity="switch.0x54ef44100120aedb_l2",
+            increase_entity="switch.0x54ef44100120aedb_l2",
+            decrease_entity="switch.0x54ef44100120aedb_l1",
             max_steps=75
         )
         self.run_every(self.loop, "now", 60)
