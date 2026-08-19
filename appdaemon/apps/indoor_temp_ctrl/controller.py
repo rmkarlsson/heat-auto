@@ -61,11 +61,8 @@ class IndoorTempCtrl(hass.Hass):
         # 4. Diff
         diff = target_temp - fram_temp
 
-        self.log(f"Outdoor: {outdoor_temp} C, actutal heat in: {fram_temp} C, target heat in: {target_temp} C, Diff: {diff:.2f} C")
-
         # 5. Deadband ±2°C
         if abs(diff) <= 2:
-            self.log("Within deadband (+/-2 C), no shunt adjustement")
             return
 
         # 6. Styr shunten

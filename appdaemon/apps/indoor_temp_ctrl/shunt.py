@@ -17,7 +17,6 @@ class Shunt:
 
         if self.last_direction != direction:
             return True
-        self.hass.log("_can_move: " + str(self.direction_count))
         return self.direction_count < self.max_steps
 
     def _register_move(self, direction):
@@ -26,11 +25,9 @@ class Shunt:
         else:
             self.last_direction = direction
             self.direction_count = 1
-        self.hass.log("dir_cnt:" +  str(self.direction_count))
 
     def increase(self):
         if not self._can_move("up"):
-            self.hass.log("Shunt: Max opened, no possible to increase more, no action")
             return False
 
         self.hass.log("Shunt: Increase (open active for 2 sekund)")
@@ -42,7 +39,6 @@ class Shunt:
 
     def decrease(self):
         if not self._can_move("down"):
-            self.hass.log("Shunt: Max closed, no possible to decrease more, no action")
             return False
 
         self.hass.log("Shunt: Decrease (close active for 2 sekund)")
