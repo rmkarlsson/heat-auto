@@ -1,8 +1,0 @@
-indoor_temp_ctrl:
-  module: indoor_temp_ctrl.controller
-  class: IndoorTempCtrl
-
-nh:
-  module: nh.main
-  class: EnergyPriceApp
-  active_entity: switch.0xf0fd45fffeef4457
