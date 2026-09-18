@@ -39,6 +39,7 @@ class IndoorTempCtrl(hass.Hass):
         )
         self.run_every(self.loop, "now", 60)
         self.log("indoor_temp_ctrl startad")
+        self.temp_log_state = False
 
     def loop(self, kwargs):
         # 1. Framledning
@@ -60,10 +61,15 @@ class IndoorTempCtrl(hass.Hass):
 
         # 4. Diff
         diff = target_temp - fram_temp
+        if not self.temp_log_state:
+            self.log(f"Outdoor: {outdoor_temp}, Fwd: {fram_temp}, Target: {target_temp}, Diff: {diff:.2f}")
+            self.temp_log_state = True
 
         # 5. Deadband ±2°C
         if abs(diff) <= 2:
             return
+
+        self.temp_log_state = False
 
         # 6. Styr shunten
         if diff > 2:

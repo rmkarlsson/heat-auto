@@ -1,0 +1,2 @@
+#!/bin/bash -x
+rsync -av   --exclude='.venv/'   --exclude='.git/'   --exclude='__pycache__/'   --exclude='*.pyc'   --exclude='.pytest_cache/'   --exclude='test_*.py'   ~/repo/heat-auto   /opt/appdaemon_root/apps/.
